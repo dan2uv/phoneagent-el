@@ -12,12 +12,12 @@ export default {
       max_tokens: -1,
       // Deine Knowledge Base
       knowledge_base: [
-        {
-          id: "nFWoVKzdcWNp3zgh1oSj",
-          name: "Case Study",
-          type: "text",
-          usage_mode: "auto"
-        }
+        // {
+        //   id: "nFWoVKzdcWNp3zgh1oSj",
+        //   name: "Case Study",
+        //   type: "text",
+        //   usage_mode: "auto"
+        // }
       ],
       // Hier der Prompt als sauberer, lesbarer Multi-Line String
       prompt: `
@@ -62,19 +62,19 @@ Nutze IMMER die eventTypeId: {{calcom_event_id}}
     }
   },
   // Exakte TTS Settings
-  tts: {
-    model_id: "eleven_flash_v2_5",
-    voice_id: "7eVMgwCnXydb3CikjV7a",
+ tts: {
+    modelId: "eleven_flash_v2_5", // Das ist das geforderte Modell!
+    voiceId: "xvJlFDEsGD0zHqHqKFVJ",
     stability: 0.48,
-    similarity_boost: 0.8,
+    similarityBoost: 0.8,
     speed: 1.04,
-    optimize_streaming_latency: 3,
-    agent_output_audio_format: "pcm_16000"
+    optimizeStreamingLatency: 3,
+    agentOutputAudioFormat: "pcm_16000"
   },
   // Exakte Conversation Settings
   conversation: {
-    turn_timeout: 7,
-    max_duration_seconds: 300,
-    silence_end_call_timeout: 20
+    turnTimeout: 7,
+    maxDurationSeconds: 300,
+    silenceEndCallTimeout: 20
   }
 };

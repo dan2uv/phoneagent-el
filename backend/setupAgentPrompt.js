@@ -55,9 +55,9 @@ async function setupAgentPrompt() {
         },
         tts: agentConfig.tts,
         conversation: {
-            turnTimeout: agentConfig.conversation.turn_timeout,
-            maxDurationSeconds: agentConfig.conversation.max_duration_seconds,
-            silenceEndCallTimeout: agentConfig.conversation.silence_end_call_timeout
+            turnTimeout: agentConfig.conversation.turnTimeout,
+            maxDurationSeconds: agentConfig.conversation.maxDurationSeconds,
+            silenceEndCallTimeout: agentConfig.conversation.silenceEndCallTimeout
         }
       }
     });
@@ -65,7 +65,7 @@ async function setupAgentPrompt() {
     console.log(`✅ Agent Config & Variable {{calcom_event_id}} synchronisiert!`);
 
   } catch (error) {
-    console.log("ℹ️ Setup Info: Update übersprungen (API Fehler oder fehlende Keys).");
+    console.log("ℹ️ Setup Info: Update übersprungen (API Fehler ");
     console.error(error); // Zum Debuggen falls doch was klemmt
   }
 }
