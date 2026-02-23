@@ -8,7 +8,7 @@ const client = new ElevenLabsClient({
   apiKey: process.env.ELEVENLABS_API_KEY, 
 });
 
-console.log(`🚀 Sicheres Bun Backend läuft auf http://localhost:${PORT}`);
+console.log(`🚀Bun Backend läuft auf http://localhost:${PORT}`);
 
 Bun.serve({
   port: PORT,

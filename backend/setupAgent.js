@@ -11,7 +11,7 @@ const client = new ElevenLabsClient({
 // ==========================================
 // AUTO-SETUP FÜR DIE JURY (Wird beim Server-Start ausgeführt)
 // ==========================================
-async function setupAgentPrompt() {
+const setupAgentConfig = async () => {
   console.log("🛠️ STARTE AUTO-SETUP...");
 
   try {
@@ -68,4 +68,4 @@ async function setupAgentPrompt() {
     console.error(error); // Zum Debuggen falls doch was klemmt
   }
 }
-setupAgentPrompt();
+// setupAgentPrompt();
