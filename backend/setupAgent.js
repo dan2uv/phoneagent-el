@@ -1,71 +1,73 @@
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
-import agentConfig from "./elevenLabs_config.js";
+import agentConfig from "./elevenLabs_config.json" with { type: "json" }; 
+import { getCalEventId } from "./cal_com";
 
 // 1. SDK Initialisieren
 const client = new ElevenLabsClient({
   apiKey: process.env.ELEVENLABS_API_KEY, 
-});// ==========================================
+});
+
+const createAgent = async () => {
+    try {
+        console.log("🆕 Erstelle neuen Agenten...");
+        // Explizit nur die benötigten Config-Teile holen
+        const { conversationConfig, platformSettings, name } = agentConfig;
+        const response = await client.conversationalAi.agents.create({ conversationConfig, platformSettings, name });
+        return response.agentId;
+    } catch (error) {
+        console.error("❌ Fehler beim Erstellen des Agenten:", error);
+        throw error;
+    }
+};
+
+// AKTUELL NUR GENUTZT FÜR CALVOM EVENT ID UPDATE
+const updateAgent = async (agentId, calcom_event_id) => {
+  console.log(`🛠️ Update Agent ${agentId}...`);
+  
+  // Wir senden nur die Änderungen (hier: dynamische Variable)
+  await client.conversationalAi.agents.update(agentId, {
+    conversationConfig: {
+      agent: {
+        dynamicVariables: {
+          dynamicVariablePlaceholders: {
+            "calcom_event_id": calcom_event_id 
+          }
+        }
+      }
+    }
+  });
+  console.log(`✅ Agent Config & Variable {{calcom_event_id}} synchronisiert!`);
+};
+
+// ==========================================
 // AUTO-SETUP FÜR DIE JURY (Wird beim Server-Start ausgeführt)
 // ==========================================
-// ==========================================
-// AUTO-SETUP FÜR DIE JURY (Wird beim Server-Start ausgeführt)
-// ==========================================
-const setupAgentConfig = async () => {
+export const setupAgent = async () => {
   console.log("🛠️ STARTE AUTO-SETUP...");
 
   try {
-    const calApiKey = process.env.CALCOM_API_KEY;
-    const agentId = process.env.ELEVENLABS_AGENT_ID;
+    let agentId = agentConfig.agentId;
 
-    if (!calApiKey || !agentId) return console.warn("⚠️ Keys fehlen. Setup übersprungen.");
+    // 1. Erstellen, falls ID fehlt oder "NONE"
+    if (!agentId || agentId === "NONE") {
+      agentId = await createAgent();
+      console.log(`✅ Agent erstellt! ID: ${agentId}`);
+      
+      // ID in Config speichern
+      agentConfig.agentId = agentId;
+      await Bun.write(`${import.meta.dir}/elevenLabs_config.json`, JSON.stringify(agentConfig, null, 2));
+      console.log("💾 Agent ID in Config gespeichert.");
+    }
 
-    // 1. Cal.com Event-ID holen
-    const calRes = await fetch(`https://api.cal.com/v1/event-types?apiKey=${calApiKey}`);
-    const calData = await calRes.json();
-    if (!calData.event_types?.length) return console.log("❌ Keine Cal.com Events.");
-
-    // Suche 30-Min Termin oder nimm den ersten
-    const event = calData.event_types.find(e => e.length === 30) || calData.event_types[0];
-    
-     const dynamicId = event.id.toString(); 
-    console.log(`✅ Cal.com Event ID geladen: ${dynamicId}`);
-
-    // 2. Update senden (VIEL SAUBERER!)
-    // Wir setzen einfach die Variable im 'dynamic_variable_placeholders' Objekt
-   await client.conversationalAi.agents.update(agentId, {
-      conversationConfig: {
-        agent: {
-          name: agentConfig.agent.name,
-          language: agentConfig.agent.language,
-          firstMessage: agentConfig.agent.firstMessage,
-          prompt: {
-            prompt: agentConfig.agent.prompt.prompt, 
-            llm: agentConfig.agent.prompt.llm,
-            temperature: agentConfig.agent.prompt.temperature,
-            maxTokens: agentConfig.agent.prompt.maxTokens,
-            knowledgeBase: agentConfig.agent.prompt.knowledgeBase
-          },
-          dynamicVariables: {
-            dynamicVariablePlaceholders: {
-              "calcom_event_id": dynamicId 
-            }
-          }
-        },
-        tts: agentConfig.tts,
-        conversation: agentConfig.conversation
-      },
-      // HIER EINFACH DIREKT ÜBERGEBEN (Kein Absichern nötig!)
-      platformSettings: {
-        dataCollection: agentConfig.platformSettings.dataCollection
-      }
-    });
-
-    console.log(`✅ Agent Config & Variable {{calcom_event_id}} synchronisiert!`);
+    // 2. Update durchführen (für dynamische Variablen etc.)
+    const calEventId = await getCalEventId();
+    await updateAgent(agentId, calEventId);
 
   } catch (error) {
-    console.log("ℹ️ Setup Info: Update übersprungen (API Fehler ");
-    console.error(error); // Zum Debuggen falls doch was klemmt
+    console.log("ℹ️ Setup Info: Fehler aufgetreten");
+   throw new Error(error.message || error); // Fehler weiterwerfen, damit es im Setup-Run sichtbar wird
   }
 }
-// setupAgentPrompt();
+
+//setupAgentConfig("1234");

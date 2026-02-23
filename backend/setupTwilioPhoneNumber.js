@@ -1,4 +1,5 @@
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import agentConfig from "./elevenLabs_config.json" with { type: "json" };
 
 const { ELEVENLABS_API_KEY, TWILIO_PHONE_NUMBER, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
 
@@ -60,7 +61,10 @@ const addTwilioNumber = async () => {
 
 const assignAgentToNumber = async (phoneNumberId) => {
     try {
-        const agentId = process.env.ELEVENLABS_AGENT_ID;
+        const agentId = agentConfig.agentId;
+        if (!agentId || agentId === "NONE") {
+            throw new Error("Keine Agent ID in der Config gefunden. Bitte erst setupAgent ausführen.");
+        }
 
         await client.conversationalAi.phoneNumbers.update(phoneNumberId, {
             agentId: agentId,
