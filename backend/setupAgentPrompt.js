@@ -33,20 +33,19 @@ async function setupAgentPrompt() {
 
     // 2. Update senden (VIEL SAUBERER!)
     // Wir setzen einfach die Variable im 'dynamic_variable_placeholders' Objekt
-    await client.conversationalAi.agents.update(agentId, {
+   await client.conversationalAi.agents.update(agentId, {
       conversationConfig: {
         agent: {
           name: agentConfig.agent.name,
           language: agentConfig.agent.language,
-          firstMessage: agentConfig.agent.first_message,
+          firstMessage: agentConfig.agent.firstMessage,
           prompt: {
-            prompt: agentConfig.agent.prompt.prompt, // Der Prompt bleibt statisch (mit {{...}})
+            prompt: agentConfig.agent.prompt.prompt, 
             llm: agentConfig.agent.prompt.llm,
             temperature: agentConfig.agent.prompt.temperature,
-            maxTokens: agentConfig.agent.prompt.max_tokens,
-            knowledgeBase: agentConfig.agent.prompt.knowledge_base
+            maxTokens: agentConfig.agent.prompt.maxTokens,
+            knowledgeBase: agentConfig.agent.prompt.knowledgeBase
           },
-          // HIER PASSIERT DIE MAGIE:
           dynamicVariables: {
             dynamicVariablePlaceholders: {
               "calcom_event_id": dynamicId 
@@ -54,11 +53,11 @@ async function setupAgentPrompt() {
           }
         },
         tts: agentConfig.tts,
-        conversation: {
-            turnTimeout: agentConfig.conversation.turnTimeout,
-            maxDurationSeconds: agentConfig.conversation.maxDurationSeconds,
-            silenceEndCallTimeout: agentConfig.conversation.silenceEndCallTimeout
-        }
+        conversation: agentConfig.conversation
+      },
+      // HIER EINFACH DIREKT ÜBERGEBEN (Kein Absichern nötig!)
+      platformSettings: {
+        dataCollection: agentConfig.platformSettings.dataCollection
       }
     });
 
