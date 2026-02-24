@@ -70,7 +70,7 @@ export const setupAgent = async (forceRecreate = false) => {
         const calEventId = await getCalEventId();
         await updateCalComEventId(agentId, calEventId);
         await addDocuments(); 
-        await setupTwilioNumber();
+        await setupTwilioNumber(forceRecreate);
         console.log("🎉 SETUP ABGESCHLOSSEN! Agent ist bereit.");
 
     } catch (error) {
@@ -79,4 +79,4 @@ export const setupAgent = async (forceRecreate = false) => {
     }
 }
 
-setupAgent();
+setupAgent(true);

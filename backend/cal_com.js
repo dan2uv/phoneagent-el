@@ -15,8 +15,8 @@ export const getCalEventId = async () => {
         }
 
         const selectedEvent = 
-            calData.event_types.find(e => e.length === 15) || 
             calData.event_types.find(e => e.length === 30) || 
+            calData.event_types.find(e => e.length === 15) || 
             calData.event_types[0];
         const dynamicId = selectedEvent.id.toString();
 

@@ -76,8 +76,8 @@ const assignAgentToNumber = async (phoneNumberId) => {
     }
 }
 
-export const setupTwilioNumber = async () => {
-    if (!(await getPhoneNumbers())) {
+export const setupTwilioNumber = async (forceRecreate = false) => {
+    if (!(await getPhoneNumbers()) || forceRecreate) {
         const phoneNumberId = await addTwilioNumber();//only add if no numbers exist
         await assignAgentToNumber(phoneNumberId);
     }
