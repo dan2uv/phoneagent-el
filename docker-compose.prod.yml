@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    container_name: agent-dashboard-prod
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "8080:4173"
+    env_file:
+      - .env
+    restart: always
+    command: ["sh", "-c", "bun backend/setupAgent.js && bun run build && bun run preview --host"]

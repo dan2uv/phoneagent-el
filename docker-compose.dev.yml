@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    container_name: agent-dashboard-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules # Wichtig: Verhindert Überschreiben durch Host
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+    command: ["sh", "-c", "bun backend/setupAgent.js && bun run dev --host"]
