@@ -79,4 +79,4 @@ export const setupAgent = async (forceRecreate = false) => {
     }
 }
 
-setupAgent(true);
+setupAgent();

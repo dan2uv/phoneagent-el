@@ -232,6 +232,21 @@ body {
 .data-group { margin-bottom: 1.5rem; }
 .data-group h3 { font-size: 1rem; margin: 0 0 0.5rem 0; color: #334155; }
 .data-group p { margin: 0.35rem 0; color: #475569; line-height: 1.5; }
+
+/* Lead Score Highlight im Modal */
+.lead-score-display {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  padding: 0.25rem 1rem;
+  border-radius: 8px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+.score-A { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+.score-B { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.score-C { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
 .audio-player { background: #f1f5f9; padding: 1.25rem; border-radius: 8px; margin-bottom: 0; }
 .audio-player h3 { margin-bottom: 1rem; }
 

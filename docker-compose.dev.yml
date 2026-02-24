@@ -11,4 +11,4 @@ services:
       - "8000:8000" # Backend API (Bun Server)
     env_file:
       - .env
-    command: ["sh", "-c", "bun backend/setupAgent.js && (bun backend/server.js & bun run dev --host)"]
+    command: ["sh", "-c", "bun backend/setupAgent.js && (bun --watch backend/server.js & bun run dev --host)"]
