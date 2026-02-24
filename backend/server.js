@@ -11,7 +11,7 @@ const client = new ElevenLabsClient({
     apiKey: process.env.ELEVENLABS_API_KEY,
 });
 
-console.log(`🚀Bun Backend läuft auf http://localhost:${PORT}`);
+console.log(`🚀 Agent-Dashboard Backend aktiv auf: ${API_BASE_URL}`);
 
 const agentId = agentConfig.agentId;
 const hasValidId = agentId && agentId.startsWith("agent_");

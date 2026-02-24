@@ -1,5 +1,5 @@
 {
-  "agentId": "agent_3601kj8byzm5fqa9dtsa5cp225j5",
+  "agentId": "NONE",
   "name": "Lead agent Alex - Pro",
   "conversationConfig": {
     "agent": {
@@ -22,7 +22,7 @@
         },
         "knowledgeBase": [
           {
-            "id": "AuJEp7nWccXbsneD68hU",
+            "id": "xqHB5ztwcY9erjE4yRD3",
             "name": "Case Study Dimitri",
             "type": "file"
           }
