@@ -7,8 +7,9 @@ services:
       - .:/app
       - /app/node_modules
     ports:
-      - "8080:4173"
+      - "8080:4173" # Frontend (Vite Preview)
+      - "8000:8000" # Backend API (Bun Server)
     env_file:
       - .env
     restart: always
-    command: ["sh", "-c", "bun backend/setupAgent.js && bun run build && bun run preview --host"]
+    command: ["sh", "-c", "bun backend/setupAgent.js && bun run build && (bun backend/server.js & bun run preview --host)"]

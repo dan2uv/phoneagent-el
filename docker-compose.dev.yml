@@ -7,7 +7,8 @@ services:
       - .:/app
       - /app/node_modules # Wichtig: Verhindert Überschreiben durch Host
     ports:
-      - "5173:5173"
+      - "5173:5173" # Frontend (Vite Dev Server)
+      - "8000:8000" # Backend API (Bun Server)
     env_file:
       - .env
-    command: ["sh", "-c", "bun backend/setupAgent.js && bun run dev --host"]
+    command: ["sh", "-c", "bun backend/setupAgent.js && (bun backend/server.js & bun run dev --host)"]
