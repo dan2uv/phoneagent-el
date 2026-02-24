@@ -4,6 +4,7 @@ import agentConfig from "./elevenLabs_config.json" with { type: "json" };
 
 
 const PORT = 8000;
+const API_BASE_URL = process.env.VITE_API_URL || `http://localhost:${PORT}`;
 
 // 1. SDK Initialisieren
 const client = new ElevenLabsClient({
@@ -25,7 +26,7 @@ Bun.serve({
         const headers = {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Headers": "Content-Type, Range",
         };
 
         if (req.method === "OPTIONS") return new Response(null, { headers });
@@ -117,7 +118,7 @@ Bun.serve({
                     score: leadScore,
                     summary: summary,
                     dropOffReason: dropOffReason,
-                    audioUrl: `http://localhost:8000/api/audio/${call.conversationId}`
+                    audioUrl: `${API_BASE_URL}/api/audio/${call.conversationId}`
                 };
 
                 return new Response(JSON.stringify(details), {

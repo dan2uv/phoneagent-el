@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'preact/hooks';
 import './app.css';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedCall, setSelectedCall] = useState(null);
@@ -13,7 +15,7 @@ useEffect(() => {
   const fetchDashboardData = async () => {
     try {
       // Frontend ruft DEIN Backend auf, nicht direkt ElevenLabs!
-      const res = await fetch('http://localhost:8000/api/dashboard');
+      const res = await fetch(`${API_BASE}/api/dashboard`);
       const data = await res.json();
       setStats(data);
     } catch (error) {
@@ -27,7 +29,7 @@ useEffect(() => {
   const loadAnalytics = async () => {
     setLoadingAnalytics(true);
     try {
-        const res = await fetch('http://localhost:8000/api/analytics');
+        const res = await fetch(`${API_BASE}/api/analytics`);
         const data = await res.json();
         setAnalyticsData(data);
     } catch (error) {
@@ -39,7 +41,7 @@ useEffect(() => {
 
   const handleCallClick = async (callId) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/call/${callId}`);
+      const res = await fetch(`${API_BASE}/api/call/${callId}`);
       const details = await res.json();
       setSelectedCall(details);
     } catch (error) {

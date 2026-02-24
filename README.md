@@ -2,17 +2,25 @@
 
 Dieses Projekt automatisiert die Erstellung und Konfiguration eines **ElevenLabs AI Voice Agenten** inklusive **Twilio-Telefonnummer** und **Cal.com-Integration**.
 
-## 🚀 Schnellstart
+## 🚀 Schnellstart (Production)
 
 Das gesamte Setup wird automatisch beim Start des Docker-Containers ausgeführt.
 
 1. **Umgebungsvariablen setzen**:
-   Stelle sicher, dass deine `.env` Datei alle notwendigen API-Keys enthält (ElevenLabs, Twilio, Cal.com).
+   Erstelle eine `.env` Datei basierend auf `.env.example` und fülle alle Werte aus.
+   
+   **WICHTIG für Production:**
+   Setze `VITE_API_URL` auf die öffentliche IP deines Servers (inkl. Port 8000), damit das Frontend (im Browser des Users) das Backend erreichen kann.
+   ```env
+   VITE_API_URL=http://DEINE_SERVER_IP:8000
+   ```
 
 2. **Container starten**:
    ```bash
-   docker-compose up --build
+   docker-compose -f docker-compose.prod.yml up -d --build
    ```
+
+
 
 ## ⚙️ Was passiert im Hintergrund?
 

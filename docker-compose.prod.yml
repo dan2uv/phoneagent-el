@@ -9,6 +9,8 @@ services:
     ports:
       - "8080:4173" # Frontend (Vite Preview)
       - "8000:8000" # Backend API (Bun Server)
+    environment:
+      - VITE_API_URL=${VITE_API_URL} # Wird aus der .env Datei geladen
     env_file:
       - .env
     restart: always
